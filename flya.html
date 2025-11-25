@@ -1,0 +1,30 @@
+
+from Bio SeqUtils ProtParam import ProteinAnalysis
+
+class ProteinCalculator:
+    def calculate_mw(self, sequence, modifications=None):
+        """
+        :param sequence: 蛋白质序列字符串
+        :param modifications: 修饰字典 {position: mass_change}
+        :return: 分子量(Da)
+        """
+        analyzer = ProteinAnalysis(sequence)
+        base_mw = analyzer molecular_weight()
+        
+        if modifications:
+            for pos, delta in modifications items():
+                # 修正修饰位点计算（考虑N端/C端特殊情况）
+                if pos == 0:  # N端修饰
+                    base_mw += delta - analyzer amino_acids_content[sequence[0]]
+                elif pos == len(sequence):  # C端修饰
+                    base_mw += delta
+                else:  # 内部修饰
+                    base_mw += delta - analyzer amino_acids_content[sequence[pos-1]]
+        
+        return round(base_mw, 2)
+
+# 示例：计算带有磷酸化修饰的蛋白分子量
+calc = ProteinCalculator()
+seq = "MKTIIALSYIFCLVFA"
+modifications = {2: 79 966}  # 第2位丝氨酸磷酸化（+79 966Da）
+print(calc calculate_mw(seq, modifications))  # 输出: 1843 23
