@@ -1,0 +1,22 @@
+
+import pymol
+from pymol import cmd
+
+class StructureVisualizer:
+    def __init__(self):
+        pymol finish_launching()
+        
+    def load_structure(self, pdb_id):
+        cmd fetch(pdb_id, async_=0)
+        cmd show("cartoon")
+        cmd color("spectrum", "all")
+        
+    def highlight_interface(self, chain1, chain2, cutoff=4 0):
+        cmd select("interface", f"byres ({chain1} around {cutoff}) and {chain2}")
+        cmd show("sticks", "interface")
+        cmd set("stick_radius", 0 3)
+
+# 示例：可视化新冠病毒S蛋白与ACE2的相互作用界面
+vis = StructureVisualizer()
+vis load_structure("6VSB")  # S蛋白PDB ID
+vis highlight_interface("chain A", "chain E")  # 突出显示结合界面
