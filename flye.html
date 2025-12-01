@@ -1,0 +1,49 @@
+
+
+df = analyzer load_maxquant_results("cancer_samples/proteinGroups txt")
+
+# 2 差异表达分析
+
+df['log2FC'] = df['LFQ_cancer'] - df['LFQ_normal']
+
+significants = df[(df['log2FC'] abs() > 1) & (df['p-value'] < 0 05)]
+
+# 3 通路富集分析
+
+from gseapy import enrichr
+
+enrichr(gene_list=significants['Gene names'] tolist(), 
+
+organism='Human', 
+
+outdir='enrichment_results')
+
+五、系统扩展方向
+
+AI集成：接入AlphaFold2预测未知结构
+
+python
+
+from alphafold import run_alphafold
+
+def predict_structure(sequence):
+
+prediction = run_alphafold(sequence)
+
+return prediction['structure']
+
+区块链存证：使用Hyperledger Fabric记录实验数据
+
+python
+
+from hfc import Client
+
+client = Client(net_profile="network json")
+
+channel = client get_channel('proteinchannel')
+
+transaction = channel submit_transaction('recordData', 
+
+experiment_id, 
+
+json dumps(data))
